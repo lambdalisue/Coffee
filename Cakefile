@@ -47,14 +47,14 @@ class logger
   @fail: (message, explanation) ->
     logger.error "#{logger.cross}  #{message}", explanation
 
-if not sources?
+if not sources? and srcdir?
   # automatically generate source list from srcdir
   sources = fs.readdirSync srcdir
   sources = (file.replace(/\.coffee/, '') for file in sources when /\.coffee$/.test file)
-if not tests?
+if not tests? and testdir?
   # automatically generate test source list from testdir
   tests = fs.readdirSync testdir
-  tests = (file.replace(/\.coffee/, '') for file in tests when /\.coffee$/.test file)
+  tests = (file.replace(/\.coffee/, '') for file in tests when /test_(.*)\.coffee$/.test file)
 
 ### Continually compile the coffee scripts ###
 task 'watch', 'continually compile the coffee scripts', ->
